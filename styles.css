@@ -35,7 +35,7 @@ h1, h2, h3, h4, h5, h6 {
 /* 1. Foto principal */
 .hero-section {
     min-height: 100vh;
-    background-image: url('../Matrimonio/img/fondo-principal.jpg');
+    background-image: url('../img/fondo-principal.jpg');
     background-size: cover;
     background-position: center;
 }
@@ -43,7 +43,7 @@ h1, h2, h3, h4, h5, h6 {
 /* 2. Nombres de los novios */
 .nombres-section {
     min-height: 60vh;
-    background-image: url('../Matrimonio/img/fondo-nombres.png');
+    background-image: url('../img/fondo-nombres.png');
     background-size: cover;
     background-position: center;
     background-attachment: fixed; /* Efecto parallax */
@@ -75,8 +75,9 @@ h1, h2, h3, h4, h5, h6 {
 /* 9. Versículo */
 .versiculo-section {
     min-height: 50vh;
-    background-image: url('../Matrimonio/img/fondo-versiculo.jpg');
+    background-image: url('../img/fondo-versiculo.jpg');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
 }
+
