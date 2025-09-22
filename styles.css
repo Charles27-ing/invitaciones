@@ -1,0 +1,159 @@
+/* Estilos generales y fuentes */
+body {
+    font-family: 'Garamond', serif; /* Una fuente elegante para bodas */
+    color: #555;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', serif; /* Fuente decorativa para títulos */
+}
+
+/* Función para superponer un color oscuro a las imágenes de fondo y que el texto resalte */
+.overlay {
+    position: relative;
+    background-size: cover;
+    background-position: center center;
+    background-attachment: fixed; /* Efecto parallax */
+}
+
+.overlay::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5); /* Capa oscura */
+    z-index: 1;
+}
+
+.overlay > .container {
+    position: relative;
+    z-index: 2;
+    
+}
+
+/* 1. Foto principal ************************** */
+.hero-section {
+    min-height: 100vh;
+    background-image:
+    radial-gradient(rgba(238, 233, 233, 0.479), transparent, rgba(243, 143, 143, 0.788)), url("../Matrimonio/img/fondo-principal.jpg");
+    background-size: cover;
+    background-position: center;
+       
+}
+.h1{
+    color:white;
+    font-size:2.5rem;
+}
+/* 2. Nombres de los novios */ 
+.nombres-section {
+    min-height: 60vh;
+    background-image: url('../Matrimonio/img/fondo-nombres.png');
+    background-size: cover;
+    background-position: center;
+    opacity: 70%;  
+    background-attachment: fixed; /* Efecto parallax */
+}
+
+.neon-text {
+    font-size: 2rem;
+    color: #fff;
+    text-shadow: 0 0 5px #ff005e, 0 0 8px #ff005e, 0 0 18px #ff005e, 0 0 38px #ff005e, 0 0 78px #ff005e;
+    animation: glow 1.5s infinite alternate;
+}
+
+@keyframes glow {
+    0% {
+        text-shadow: 0 0 5px #ff005e, 0 0 10px #ff005e, 0 0 20px #ff005e, 0 0 40px #ff005e, 0 0 80px #ff005e;
+    }
+    100% {
+        text-shadow: 0 0 10px #00d4ff, 0 0 20px #00d4ff, 0 0 40px #00d4ff, 0 0 80px #00d4ff, 0 0 160px #00d4ff;
+    }
+}
+
+.masked-text {
+    font-size: 3rem;
+    font-weight: bold;
+    color: transparent;
+    background-image: url('https://images.unsplash.com/photo-1732535725600-f805d8b33c9c?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'); 
+    background-size: 200%; /* Enlarged for smooth animation */
+    background-position: 0 50%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: animate-background 5s infinite alternate linear;
+}
+
+@keyframes animate-background {
+    0% {
+        background-position: 0 50%;
+    }
+    100% {
+        background-position: 100% 50%;
+    }
+}
+
+/* ******************************************************* */
+
+
+
+.cursor{
+    position: relative;
+    width: 24em;
+    margin: 0 auto;
+    border-right: 2px solid rgba(255,255,255,.75);
+    font-size: 30px;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    transform: translateY(-50%);    
+}
+
+/* Animation */
+.typewriter-animation {
+  animation: 
+    typewriter 5s steps(50) 1s 1 normal both, 
+    blinkingCursor 500ms steps(50) infinite normal;
+}
+@keyframes typewriter {
+  from { width: 0; }
+  to { width: 100%; }
+}
+@keyframes blinkingCursor{
+  from { border-right-color: rgba(255,255,255,.75); }
+  to { border-right-color: transparent; }
+}
+
+/* **************************************** */
+/* 3. Nombre del invitado */
+.invitado-section {
+    min-height: 50vh;
+    background-image: url('');
+    background-size: cover;
+    background-position: center;
+}
+
+/* 5. Cronómetro */
+.cronometro-section {
+    background-color: #333; /* Un color oscuro para el fondo */
+}
+
+.cronometro-section span {
+    font-size: 1rem;
+}
+
+/* 7. Carrusel */
+.carrusel-section .carousel-item img {
+    max-height: 70vh;
+    object-fit: cover; /* Asegura que la imagen cubra el espacio sin deformarse */
+}
+
+/* 9. Versículo */
+.versiculo-section {
+    min-height: 50vh;
+    background-image: url('../Matrimonio/img/fondo-versiculo.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
