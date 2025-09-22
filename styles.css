@@ -26,6 +26,10 @@ h1, h2, h3, h4, h5, h6 {
     background: rgba(0, 0, 0, 0.5); /* Capa oscura */
     z-index: 1;
 }
+.prueba{
+    
+    box-shadow: #ac1414d7;
+}
 
 .overlay > .container {
     position: relative;
@@ -37,7 +41,7 @@ h1, h2, h3, h4, h5, h6 {
 .hero-section {
     min-height: 100vh;
     background-image:
-    radial-gradient(rgba(238, 233, 233, 0.479), transparent, rgba(243, 143, 143, 0.788)), url("../Matrimonio/img/fondo-principal.jpg");
+    radial-gradient(rgba(163, 14, 14, 0.301), transparent, rgba(241, 86, 86, 0.568)), url("../Matrimonio/img/fondo-principal.jpg");
     background-size: cover;
     background-position: center;
        
