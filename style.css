@@ -1,0 +1,793 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    font-family: 'Montserrat', sans-serif;
+    background-color: #f4f0e8;
+}
+
+#flower-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 3;
+}
+
+.flower {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    animation: fall 12s linear infinite;
+    pointer-events: none;
+}
+
+.flower svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+    filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.2));
+}
+
+@keyframes fall {
+    0% { 
+        transform: translateY(-100px) rotate(0deg) scale(0.8); 
+        opacity: 0; 
+    }
+    10% { 
+        opacity: 1; 
+    }
+    90% { 
+        opacity: 1; 
+    }
+    100% { 
+        transform: translateY(100vh) rotate(360deg) scale(1.2); 
+        opacity: 0; 
+    }
+}
+
+/* Animación adicional para pétalos flotantes */
+@keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    25% { transform: translateY(-10px) rotate(5deg); }
+    50% { transform: translateY(-5px) rotate(-3deg); }
+    75% { transform: translateY(-15px) rotate(8deg); }
+}
+
+.flower.floating {
+    animation: float 4s ease-in-out infinite;
+    position: fixed;
+    opacity: 0.6;
+}
+
+/* Flores decorativas en las esquinas */
+.corner-flower {
+    position: fixed;
+    width: 60px;
+    height: 60px;
+    opacity: 0.3;
+    z-index: 3;
+    animation: float 6s ease-in-out infinite;
+}
+
+.corner-flower.top-left {
+    top: 20px;
+    left: 20px;
+    animation-delay: 0s;
+}
+
+.corner-flower.top-right {
+    top: 20px;
+    right: 20px;
+    animation-delay: 2s;
+}
+
+.corner-flower.bottom-left {
+    bottom: 20px;
+    left: 20px;
+    animation-delay: 4s;
+}
+
+.corner-flower.bottom-right {
+    bottom: 20px;
+    right: 20px;
+    animation-delay: 1s;
+}
+
+.book {
+    position: relative;
+    width: 90%;
+    max-width: 800px;
+    height: 100vh;
+    margin: 0 auto;
+    perspective: 1500px;
+    border-left: 5px solid #8B4513;
+    box-shadow: 0 0 30px rgba(0,0,0,0.2);
+}
+
+.page {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    transform-style: preserve-3d;
+    transform-origin: left center;
+    transition: all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backface-visibility: hidden;
+    opacity: 0;
+    transform: translateY(-20px) rotateY(-15deg);
+    z-index: 1;
+}
+
+.page.visible {
+    opacity: 1;
+    transform: translateY(0) rotateY(0deg);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    z-index: 2;
+}
+
+.page.back {
+    transform: rotateY(180deg);
+    z-index: 0;
+}
+
+.page.flipped {
+    transform: rotateY(-180deg) translateZ(-1px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    z-index: 0;
+}
+
+.page.flipped::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.1) 50%, transparent 100%);
+    z-index: 3;
+    pointer-events: none;
+}
+
+.content {
+    padding: 2em;
+    text-align: center;
+    color: #333;
+}
+
+h1, h2, h3 {
+    font-family: 'Great Vibes', cursive;
+    color: #8B4513; /* Un tono café elegante */
+}
+
+h1 { font-size: 4rem; margin: 0; }
+h2 { font-size: 2.5rem; margin-top: 0; }
+h3 { font-size: 3rem; }
+
+.cover-image, .section-image {
+    max-width: 80%;
+    height: auto;
+    border-radius: 8px;
+    margin-top: 20px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+#page1 {
+    background-image: url('img/fondo-principal.jpg');
+    background-size: cover;
+    background-position: center;
+    box-shadow: inset 0 0 100px rgba(0,0,0,0.5);
+}
+#page5 {
+    background-image: url('img/mat8.jpg');
+    background-size: cover;
+    background-position: center;
+    box-shadow: inset 0 0 100px rgba(218, 39, 39, 0.555);
+}
+
+#page1 .content {
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+}
+
+.verse {
+    font-style: italic;
+    font-size: 1.2rem;
+    color: #555;
+}
+
+.verse-ref {
+    font-size: 1rem;
+    color: #777;
+}
+
+
+/* Botones de navegación */
+#prev-btn, #next-btn {
+    position: fixed;
+    bottom: 20px;
+    width: 50px;
+    height: 50px;
+    font-family: 'Montserrat', sans-serif;
+    background-color: #8B4513;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 100;
+    transition: background-color 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+}
+
+#prev-btn { left: 20px; }
+#next-btn { right: 20px; }
+
+#prev-btn:hover, #next-btn:hover {
+    background-color: #a0522d;
+}
+
+/* Typewriter effect */
+.typewriter {
+    overflow: hidden;
+    color: #f4f0e8;
+    border-right: 2px solid white;
+    white-space: nowrap;
+    animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
+}
+
+.typewriter-delay {
+    color: #f5eeee;
+    overflow: hidden;
+    border-right: 2px solid white;
+    white-space: nowrap;
+    animation: typing 3s steps(40, end) 1s, blink-caret 0.75s step-end infinite 1s;
+}
+
+@keyframes typing {
+    from { width: 0; }
+    to { width: 100%; }
+}
+
+@keyframes blink-caret {
+    from, to { border-color: transparent; }
+    50% { border-color: white; }
+}
+
+/* Estilos para el temporizador de cuenta regresiva */
+#countdown-container {
+    margin: 20px 0;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    backdrop-filter: blur(10px);
+}
+
+#countdown-container h4 {
+    font-family: 'Great Vibes', cursive;
+    font-size: 2rem;
+    color: #8B4513;
+    margin-bottom: 15px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+#countdown {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.countdown-item {
+    text-align: center;
+    background: linear-gradient(135deg, #8B4513, #a0522d);
+    color: white;
+    padding: 15px 10px;
+    border-radius: 10px;
+    min-width: 70px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    transform: scale(1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.countdown-item:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+}
+
+.countdown-item span {
+    display: block;
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+}
+
+.countdown-item label {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0.9;
+}
+
+/* Animación para los números del temporizador */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.countdown-item.pulse span {
+    animation: pulse 0.6s ease-in-out;
+}
+
+/* Responsive para el temporizador */
+@media (max-width: 600px) {
+    #countdown {
+        gap: 10px;
+    }
+    
+    .countdown-item {
+        min-width: 60px;
+        padding: 10px 8px;
+    }
+    
+    .countdown-item span {
+        font-size: 1.5rem;
+    }
+    
+    .countdown-item label {
+        font-size: 0.8rem;
+    }
+}
+
+
+/* Estilos para el mapa de ubicación */
+#map-container {
+    margin: 20px 0;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    backdrop-filter: blur(10px);
+}
+
+#map-container h4 {
+    font-family: 'Great Vibes', cursive;
+    font-size: 2rem;
+    color: #8B4513;
+    margin-bottom: 15px;
+    text-align: center;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+#map-wrapper {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+#wedding-map {
+    width: 100%;
+    height: 100%;
+    border: none;
+    filter: sepia(20%) saturate(80%) hue-rotate(15deg);
+    transition: filter 0.3s ease;
+}
+
+#wedding-map:hover {
+    filter: sepia(0%) saturate(100%) hue-rotate(0deg);
+}
+
+.map-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(transparent, rgba(0,0,0,0.8));
+    color: white;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+}
+
+#map-wrapper:hover .map-overlay {
+    transform: translateY(0);
+}
+
+.location-info {
+    flex: 1;
+    text-align: center;
+}
+
+.location-info h5 {
+    font-family: 'Great Vibes', cursive;
+    font-size: 1.2rem;
+    margin: 0 0 5px 0;
+    color: #f4f0e8;
+}
+
+.location-info p {
+    font-size: 0.9rem;
+    margin: 0;
+    opacity: 0.9;
+}
+
+/* Carousel styles */
+.carousel {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    margin: 20px auto;
+    overflow: hidden;
+}
+
+.carousel-container {
+    display: flex;
+    transition: transform 0.5s ease;
+}
+
+.carousel-image {
+    width: 100%;
+    height: auto;
+    flex-shrink: 0;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(139, 69, 19, 0.8);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+    cursor: pointer;
+    z-index: 10;
+    transition: background-color 0.3s;
+}
+
+.carousel-btn:hover {
+    background-color: #a0522d;
+}
+
+.carousel .prev-btn {
+    left: 10px;
+}
+
+.carousel .next-btn {
+    right: 10px;
+}
+
+/* Responsive para el mapa */
+@media (max-width: 600px) {
+    #map-wrapper {
+        height: 250px;
+    }
+
+    .map-overlay {
+        flex-direction: column;
+        gap: 10px;
+        padding: 15px;
+    }
+
+    .location-info h5 {
+        font-size: 1rem;
+    }
+
+    .location-info p {
+        font-size: 0.8rem;
+    }
+
+    .carousel {
+        max-width: 90%;
+    }
+
+    .carousel-btn {
+        width: 35px;
+        height: 35px;
+        font-size: 16px;
+    }
+}
+
+
+/* Mejoras en transiciones y transformaciones */
+
+/* Transiciones mejoradas para las páginas */
+.page {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    transform-style: preserve-3d;
+    transform-origin: left center;
+    transition: all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backface-visibility: hidden;
+    opacity: 0;
+    transform: translateY(-20px) rotateY(-15deg);
+}
+
+.page.visible {
+    opacity: 1;
+    transform: translateY(0) rotateY(0deg);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.page.flipped {
+    transform: rotateY(-180deg) translateZ(-1px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+/* Efectos de hover para elementos interactivos */
+.content h1, .content h2, .content h3 {
+    transition: all 0.3s ease;
+    cursor: default;
+}
+
+.content h1:hover, .content h2:hover, .content h3:hover {
+    transform: scale(1.05);
+    text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+    color: #a0522d;
+}
+
+/* Animaciones para párrafos */
+.content p {
+    transition: all 0.3s ease;
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.content p:hover {
+    transform: translateY(-2px);
+    color: #555;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+/* Efectos para imágenes */
+.section-image {
+    transition: all 0.4s ease;
+    transform: scale(1);
+    filter: brightness(1) contrast(1);
+}
+
+.section-image:hover {
+    transform: scale(1.05) rotate(1deg);
+    filter: brightness(1.1) contrast(1.1);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+}
+
+/* Mejoras en los botones de navegación */
+#prev-btn, #next-btn {
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transform: scale(1);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+#prev-btn:hover, #next-btn:hover {
+    transform: scale(1.1) translateY(-2px);
+    background-color: #a0522d;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+}
+
+#prev-btn:active, #next-btn:active {
+    transform: scale(0.95) translateY(0);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* Animaciones de entrada para elementos */
+@keyframes slideInFromLeft {
+    0% {
+        transform: translateX(-100px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideInFromRight {
+    0% {
+        transform: translateX(100px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInUp {
+    0% {
+        transform: translateY(30px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Aplicar animaciones a elementos específicos */
+.page.visible h3 {
+    animation: slideInFromLeft 0.8s ease-out 0.2s both;
+}
+
+.page.visible p {
+    animation: fadeInUp 0.6s ease-out 0.4s both;
+}
+
+.page.visible .section-image {
+    animation: slideInFromRight 0.8s ease-out 0.6s both;
+}
+
+.page.visible #countdown-container {
+    animation: fadeInUp 0.8s ease-out 0.5s both;
+}
+
+.page.visible #map-container {
+    animation: fadeInUp 0.8s ease-out 0.7s both;
+}
+
+/* Efectos de partículas brillantes */
+@keyframes sparkle {
+    0%, 100% { opacity: 0; transform: scale(0); }
+    50% { opacity: 1; transform: scale(1); }
+}
+
+.sparkle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: radial-gradient(circle, #ffd700, transparent);
+    border-radius: 50%;
+    animation: sparkle 2s ease-in-out infinite;
+    pointer-events: none;
+}
+
+/* Efecto de brillo en el título principal */
+#page1 h1, #page1 h2 {
+    position: relative;
+    overflow: hidden;
+}
+
+#page1 h1::after, #page1 h2::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    animation: shine 3s ease-in-out infinite;
+}
+
+@keyframes shine {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+/* Mejoras responsivas */
+@media (max-width: 768px) {
+    .book {
+        width: 95%;
+        max-width: none;
+    }
+
+    .page {
+        transition: all 0.8s ease;
+    }
+
+    .content {
+        padding: 1em;
+    }
+
+    h1 { font-size: 3rem; }
+    h2 { font-size: 2rem; }
+    h3 { font-size: 2.5rem; }
+
+    .content h1:hover, .content h2:hover, .content h3:hover {
+        transform: scale(1.02);
+    }
+
+    .section-image:hover {
+        transform: scale(1.02);
+    }
+
+    #prev-btn, #next-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+        bottom: 15px;
+    }
+
+    #prev-btn { left: 15px; }
+    #next-btn { right: 15px; }
+
+    #map-wrapper {
+        height: 200px;
+    }
+
+    .map-overlay {
+        padding: 10px;
+    }
+
+    .location-info h5 {
+        font-size: 1rem;
+    }
+
+    .location-info p {
+        font-size: 0.8rem;
+    }
+
+    .countdown-item {
+        min-width: 50px;
+        padding: 8px 5px;
+    }
+
+    .countdown-item span {
+        font-size: 1.2rem;
+    }
+
+    .countdown-item label {
+        font-size: 0.7rem;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 { font-size: 2.5rem; }
+    h2 { font-size: 1.8rem; }
+    h3 { font-size: 2rem; }
+
+    .content {
+        padding: 0.8em;
+    }
+
+    .section-image {
+        max-width: 90%;
+    }
+
+    #prev-btn, #next-btn {
+        width: 35px;
+        height: 35px;
+        font-size: 18px;
+        bottom: 10px;
+    }
+
+    #prev-btn { left: 10px; }
+    #next-btn { right: 10px; }
+
+    #map-wrapper {
+        height: 180px;
+    }
+
+    .verse {
+        font-size: 1rem;
+    }
+}
+
