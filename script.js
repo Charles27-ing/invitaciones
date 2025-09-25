@@ -194,19 +194,43 @@ document.addEventListener('DOMContentLoaded', function() {
     nextBtn.addEventListener('click', playHapticFeedback);
     prevBtn.addEventListener('click', playHapticFeedback);
 
+    // Function to create explosion for page7
+    function createExplosion() {
+        const explosion = document.getElementById('explosion');
+        if (!explosion) return;
+        explosion.innerHTML = ''; // Clear previous
+        for (let i = 0; i < 100; i++) {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            particle.style.left = '50%';
+            particle.style.top = '50%';
+            particle.style.animationDelay = Math.random() * 0.5 + 's';
+            particle.style.setProperty('--angle', Math.random() * 360 + 'deg');
+            particle.style.setProperty('--distance', Math.random() * 200 + 100 + 'px');
+            explosion.appendChild(particle);
+        }
+    }
+
     // Animación de entrada para elementos cuando se cargan
     function animatePageElements(pageElement) {
         const elements = pageElement.querySelectorAll('h3, p, .section-image, #countdown-container, #map-container');
         elements.forEach((element, index) => {
             element.style.opacity = '0';
             element.style.transform = 'translateY(20px)';
-            
+
             setTimeout(() => {
                 element.style.transition = 'all 0.6s ease';
                 element.style.opacity = '1';
                 element.style.transform = 'translateY(0)';
             }, index * 200);
         });
+
+        // Trigger explosion for page7
+        if (pageElement.id === 'page7') {
+            setTimeout(() => {
+                createExplosion();
+            }, 500);
+        }
     }
 
     // Mejorar la navegación con animaciones
