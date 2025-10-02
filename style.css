@@ -1047,16 +1047,20 @@ h1, h2, h3 {
 
     h3 { font-size: 3rem; }
 
-/* Estilo para el nombre del invitado en la página 2 */
+/* Estilo específico para el nombre del invitado en la página 2 - prioridad máxima */
 #guest-name-page2 {
-    font-size: 3.2rem;
-    color: #f4f0e8;
-    text-shadow: 2px 2px 6px rgba(0,0,0,0.6);
+    font-size: 3.2rem !important;
+    color: #f4f0e8 !important;
+    text-shadow: 2px 2px 6px rgba(0,0,0,0.6) !important;
     margin-top: 0.4em;
     margin-bottom: 0.2em;
-        line-height: 1.3;
-        word-break: break-word;
-    }
+    line-height: 1.3;
+    word-break: break-word;
+    display: block;
+    width: 100%;
+    text-align: center;
+    font-family: 'Great Vibes', cursive !important;
+}
 
     .content h1:hover, .content h2:hover, .content h3:hover {
         transform: scale(1.02);

@@ -17,11 +17,34 @@ document.addEventListener('DOMContentLoaded', function() {
     try {
         const params = new URLSearchParams(window.location.search);
         const invitado = params.get('invitado');
+
+        console.log('Debug - URL params:', window.location.search);
+        console.log('Debug - invitado raw:', invitado);
+
         if (invitado && invitado.trim().length > 0) {
             const name = decodeURIComponent(invitado.trim());
+            console.log('Debug - invitado decoded:', name);
+            console.log('Debug - name length:', name.length);
+            console.log('Debug - name characters:', [...name].map(c => c.charCodeAt(0)));
+
+            // Additional validation for special characters
+            if (name.length === 0) {
+                console.error('Debug - decoded name is empty!');
+                return;
+            }
+
             // Poblar página 2
             const guestNamePage2El = document.getElementById('guest-name-page2');
-            if (guestNamePage2El) guestNamePage2El.textContent = name;
+            if (guestNamePage2El) {
+                console.log('Debug - element found, setting textContent');
+                guestNamePage2El.textContent = name;
+                console.log('Debug - element textContent after setting:', guestNamePage2El.textContent);
+                console.log('Debug - element innerHTML after setting:', guestNamePage2El.innerHTML);
+            } else {
+                console.error('Debug - guest-name-page2 element not found!');
+            }
+        } else {
+            console.log('Debug - no invitado parameter found');
         }
     } catch (e) {
         console.warn('No se pudo leer el parámetro invitado:', e);
@@ -337,6 +360,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Guardar respuesta en localStorage
         const guestName = document.getElementById('guest-name-page2').textContent || 'Invitado';
+        console.log('Debug - saving confirmation for guest:', guestName);
         const response = {
             name: guestName,
             willAttend: willAttend,
