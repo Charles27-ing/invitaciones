@@ -13,12 +13,13 @@ document.addEventListener('DOMContentLoaded', function() {
         pages[i].classList.add('back');
     }
 
-    // Leer el parámetro 'invitado' y poblar nombre solo en la página 2
+    // Leer el parámetro 'invitado' y poblar nombre en ambas páginas
     try {
         const params = new URLSearchParams(window.location.search);
         const invitado = params.get('invitado');
         if (invitado && invitado.trim().length > 0) {
             const name = decodeURIComponent(invitado.trim());
+            // Poblar página 2
             const guestNamePage2El = document.getElementById('guest-name-page2');
             if (guestNamePage2El) guestNamePage2El.textContent = name;
         }
@@ -311,6 +312,42 @@ document.addEventListener('DOMContentLoaded', function() {
     setTimeout(() => {
         animatePageElements(pages[0]);
     }, 500);
+
+    // Función para confirmar asistencia
+    window.confirmAttendance = function(willAttend) {
+        const messageEl = document.getElementById('confirmation-message');
+        const buttons = document.querySelectorAll('.confirm-btn');
+        
+        // Deshabilitar botones
+        buttons.forEach(btn => {
+            btn.disabled = true;
+            btn.style.opacity = '0.6';
+        });
+        
+        // Mostrar mensaje
+        if (willAttend) {
+            messageEl.innerHTML = '¡Excelente! Nos vemos el 22 de Noviembre 💕';
+            messageEl.style.color = '#4CAF50';
+        } else {
+            messageEl.innerHTML = 'Entendemos, gracias por avisarnos. Te extrañaremos 💔';
+            messageEl.style.color = '#f44336';
+        }
+        
+        messageEl.classList.add('show');
+        
+        // Guardar respuesta en localStorage
+        const guestName = document.getElementById('guest-name-page2').textContent || 'Invitado';
+        const response = {
+            name: guestName,
+            willAttend: willAttend,
+            timestamp: new Date().toISOString()
+        };
+        
+        localStorage.setItem('weddingConfirmation', JSON.stringify(response));
+        
+        // Opcional: Enviar a servidor (si tienes backend)
+        // sendConfirmationToServer(response);
+    };
 
     // Carousel functionality for page3
     const carouselContainer = document.querySelector('.carousel-container');
