@@ -13,15 +13,26 @@ document.addEventListener('DOMContentLoaded', function() {
         pages[i].classList.add('back');
     }
 
+    // Leer el parámetro 'invitado' y poblar nombre solo en la página 2
+    try {
+        const params = new URLSearchParams(window.location.search);
+        const invitado = params.get('invitado');
+        if (invitado && invitado.trim().length > 0) {
+            const name = decodeURIComponent(invitado.trim());
+            const guestNamePage2El = document.getElementById('guest-name-page2');
+            if (guestNamePage2El) guestNamePage2El.textContent = name;
+        }
+    } catch (e) {
+        console.warn('No se pudo leer el parámetro invitado:', e);
+    }
 
-    // Crear flores SVG en movimiento
+    // Crear flores SVG en movimiento (pétalos flotando)
     function createFlower() {
+        if (!flowerContainer) return;
         const flower = document.createElement('div');
         flower.classList.add('flower');
-        
-        // Array de diferentes tipos de flores SVG
+
         const flowerSVGs = [
-            // Rosa simple
             `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
                 <g transform="translate(50,50)">
                     <circle cx="0" cy="0" r="8" fill="#ff69b4" opacity="0.8"/>
@@ -32,8 +43,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     <circle cx="0" cy="-15" r="10" fill="#ff69b4" opacity="0.8"/>
                 </g>
             </svg>`,
-            
-            // Flor de cerezo
             `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
                 <g transform="translate(50,50)">
                     <circle cx="0" cy="0" r="6" fill="#ffd700"/>
@@ -44,8 +53,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     <ellipse cx="-14" cy="5" rx="8" ry="15" fill="#ffb6c1" opacity="0.8" transform="rotate(288)"/>
                 </g>
             </svg>`,
-            
-            // Margarita
             `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
                 <g transform="translate(50,50)">
                     <circle cx="0" cy="0" r="8" fill="#ffff00"/>
@@ -59,8 +66,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     <ellipse cx="-13" cy="-13" rx="4" ry="12" fill="#ffffff" opacity="0.9" transform="rotate(315)"/>
                 </g>
             </svg>`,
-            
-            // Tulipán
             `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
                 <g transform="translate(50,50)">
                     <ellipse cx="-8" cy="-10" rx="6" ry="18" fill="#ff6347" opacity="0.8" transform="rotate(-20)"/>
@@ -70,22 +75,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 </g>
             </svg>`
         ];
-        
-        // Seleccionar un SVG aleatorio
+
         const randomSVG = flowerSVGs[Math.floor(Math.random() * flowerSVGs.length)];
         flower.innerHTML = randomSVG;
-        
         flower.style.left = Math.random() * 100 + 'vw';
-        flower.style.animationDuration = Math.random() * 5 + 10 + 's'; // Duración entre 10 y 15 seg
-        flower.style.animationDelay = Math.random() * 2 + 's'; // Delay aleatorio
-        
+        flower.style.animationDuration = Math.random() * 5 + 10 + 's';
+        flower.style.animationDelay = Math.random() * 2 + 's';
         flowerContainer.appendChild(flower);
 
         setTimeout(() => {
-            if (flower.parentNode) {
-                flower.remove();
-            }
-        }, 17000); // Coincide con la duración máxima de la animación
+            if (flower.parentNode) flower.remove();
+        }, 17000);
     }
 
     // Crear flores decorativas en las esquinas
@@ -117,7 +117,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Temporizador de cuenta regresiva
     function updateCountdown() {
-        const weddingDate = new Date('November 1, 2025 17:00:00').getTime();
+        const weddingDate = new Date('November 22, 2025 17:00:00').getTime();
         const now = new Date().getTime();
         const distance = weddingDate - now;
 
@@ -343,3 +343,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 3000);
     }
 });
+
+// Inicializar mostrando solo la cubierta
+// document.addEventListener('DOMContentLoaded', () => {
+//     flipPage(0); // Muestra la cubierta al cargar
+// });
