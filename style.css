@@ -38,19 +38,14 @@ body, html {
         transform: translateY(-100px) rotate(0deg) scale(0.8); 
         opacity: 0; 
     }
-    10% { 
-        opacity: 1; 
-    }
-    90% { 
-        opacity: 1; 
-    }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
     100% { 
         transform: translateY(100vh) rotate(360deg) scale(1.2); 
         opacity: 0; 
     }
 }
 
-/* Animación adicional para pétalos flotantes */
 @keyframes float {
     0%, 100% { transform: translateY(0px) rotate(0deg); }
     25% { transform: translateY(-10px) rotate(5deg); }
@@ -58,13 +53,6 @@ body, html {
     75% { transform: translateY(-15px) rotate(8deg); }
 }
 
-.flower.floating {
-    animation: float 4s ease-in-out infinite;
-    position: fixed;
-    opacity: 0.6;
-}
-
-/* Flores decorativas en las esquinas */
 .corner-flower {
     position: fixed;
     width: 60px;
@@ -116,7 +104,7 @@ body, html {
     background: #fff;
     transform-style: preserve-3d;
     transform-origin: left center;
-    transition: all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transition: all 1.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     box-shadow: 0 0 20px rgba(0,0,0,0.1);
     display: flex;
     justify-content: center;
@@ -165,7 +153,7 @@ body, html {
 
 h1, h2, h3 {
     font-family: 'Great Vibes', cursive;
-    color: #716433de; /* Un tono café elegante */
+    color: #716433de;
     hyphens: auto;
     line-height: 1.2;
     margin-bottom: 0.5em;
@@ -179,7 +167,6 @@ h1, h2, h3 {
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
-/* Estilos para sección de fecha y lugar */
 .date-location-section {
     margin: 0;
     padding: 0;
@@ -193,7 +180,6 @@ h1, h2, h3 {
     margin: 0;
 }
 
-/* Estilos para sección de regalo */
 .gift-section-header {
     display: flex;
     align-items: center;
@@ -202,7 +188,6 @@ h1, h2, h3 {
     margin: 0;
 }
 
-/* Clase independiente para la sección de pareja */
 .couple-section {
     display: flex;
     align-items: center;
@@ -236,10 +221,8 @@ h1, h2, h3 {
     width: auto;
     height: auto;
     object-fit: cover;
-    /* box-shadow: 0 4px 12px rgba(0,0,0,0.3); */
 }
 
-/* Animaciones para emojis */
 @keyframes gentle-bounce {
     0%, 100% { 
         transform: translateY(0px) rotate(0deg); 
@@ -267,12 +250,14 @@ h1, h2, h3 {
     background-position: center;
     box-shadow: inset 0 0 100px rgba(240, 60, 60, 0.952);
 }
+
 #page2, #page2b {
     background-image: url('img/mat.jpg');
     background-size: cover;
     background-position: center;
     box-shadow: inset 0 0 100px rgba(240, 60, 60, 0.952);
 }
+
 #page4 {
     background-image: url('img/mat.jpg');
     background-size: cover;
@@ -292,7 +277,6 @@ h1, h2, h3 {
     text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
 }
 
-/* Estilos para la primera sección - control de tamaño */
 .first-section-text {
     font-size: 3rem;
     line-height: 1.3;
@@ -308,7 +292,6 @@ h1, h2, h3 {
     color: #f4f0e8;
 }
 
-/* Botón de confirmación de asistencia */
 .confirmation-section {
     margin: 2em 0;
     text-align: center;
@@ -386,8 +369,6 @@ h1, h2, h3 {
     color: #777;
 }
 
-
-/* Botones de navegación */
 #prev-btn, #next-btn {
     position: fixed;
     bottom: 20px;
@@ -400,21 +381,29 @@ h1, h2, h3 {
     border-radius: 50%;
     cursor: pointer;
     z-index: 100;
-    transition: background-color 0.3s;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 24px;
+    transform: scale(1);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 }
 
 #prev-btn { left: 20px; }
 #next-btn { right: 20px; }
 
 #prev-btn:hover, #next-btn:hover {
+    transform: scale(1.1) translateY(-2px);
     background-color: #a0522d;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.3);
 }
 
-/* Typewriter effect */
+#prev-btn:active, #next-btn:active {
+    transform: scale(0.95) translateY(0);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
 .typewriter {
     overflow: hidden;
     color: #f4f0e8;
@@ -462,7 +451,6 @@ h1, h2, h3 {
     }
 }
 
-/* Estilos para el temporizador de cuenta regresiva */
 #countdown-container {
     margin: 20px 0;
     padding: 20px;
@@ -519,7 +507,6 @@ h1, h2, h3 {
     opacity: 0.9;
 }
 
-/* Animación para los números del temporizador */
 @keyframes pulse {
     0% { transform: scale(1); }
     50% { transform: scale(1.1); }
@@ -528,82 +515,6 @@ h1, h2, h3 {
 
 .countdown-item.pulse span {
     animation: pulse 0.6s ease-in-out;
-}
-
-/* Responsive para el temporizador */
-@media (max-width: 600px) {
-    #countdown {
-        gap: 10px;
-    }
-    
-    .countdown-item {
-        min-width: 60px;
-        padding: 10px 8px;
-    }
-    
-    .countdown-item span {
-        font-size: 1.5rem;
-    }
-    
-    .countdown-item label {
-        font-size: 0.8rem;
-    }
-
-    /* Responsive para la sección de pareja: mantener en fila (2 columnas) */
-    .couple-section {
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
-        gap: 12px;
-        margin: 12px 0;
-        flex-wrap: nowrap;
-    }
-
-    .couple-names {
-        min-width: 0;
-        text-align: left;
-    }
-
-    .par-container .section-image {
-        max-width: 90px;
-        max-height: 90px;
-    }
-
-    /* Typewriter: evitar desbordes en móviles */
-    .typewriter, .typewriter-delay {
-        font-size: clamp(1.2rem, 6.5vw, 2rem);
-        white-space: normal;
-        display: inline-block;
-    }
-
-    .carousel {
-        max-width: 90%;
-        max-width: 250px;
-    }
-
-    .carousel-image {
-        height: 160px;
-    }
-}
-
-
-/* Estilos para el mapa de ubicación */
-#map-container {
-    margin: 20px 0;
-    padding: 20px;
-    background: rgba(255, 255, 255, 0.95);
-    border-radius: 15px;
-    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-    backdrop-filter: blur(10px);
-}
-
-#map-container h4 {
-    font-family: 'Great Vibes', cursive;
-    font-size: 2rem;
-    color: #8B4513;
-    margin-bottom: 15px;
-    text-align: center;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
 }
 
 .location-link {
@@ -636,65 +547,6 @@ h1, h2, h3 {
     color: #8B4513;
 }
 
-#map-wrapper {
-    position: relative;
-    width: 100%;
-    height: 300px;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-}
-
-#wedding-map {
-    width: 100%;
-    height: 100%;
-    border: none;
-    filter: sepia(20%) saturate(80%) hue-rotate(15deg);
-    transition: filter 0.3s ease;
-}
-
-#wedding-map:hover {
-    filter: sepia(0%) saturate(100%) hue-rotate(0deg);
-}
-
-.map-overlay {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: linear-gradient(transparent, rgba(0,0,0,0.8));
-    color: white;
-    padding: 20px;
-    display: flex;
-    justify-content: space-between;
-    gap: 20px;
-    transform: translateY(100%);
-    transition: transform 0.3s ease;
-}
-
-#map-wrapper:hover .map-overlay {
-    transform: translateY(0);
-}
-
-.location-info {
-    flex: 1;
-    text-align: center;
-}
-
-.location-info h5 {
-    font-family: 'Great Vibes', cursive;
-    font-size: 1.2rem;
-    margin: 0 0 5px 0;
-    color: #f4f0e8;
-}
-
-.location-info p {
-    font-size: 0.9rem;
-    margin: 0;
-    opacity: 0.9;
-}
-
-/* Carousel styles */
 .carousel {
     position: relative;
     width: 100%;
@@ -745,70 +597,6 @@ h1, h2, h3 {
     right: 10px;
 }
 
-/* Responsive para el mapa */
-@media (max-width: 600px) {
-    #map-wrapper {
-        height: 250px;
-    }
-
-    .map-overlay {
-        flex-direction: column;
-        gap: 10px;
-        padding: 15px;
-    }
-
-    .location-info h5 {
-        font-size: 1rem;
-    }
-
-    .location-info p {
-        font-size: 0.8rem;
-    }
-
-    .carousel {
-        max-width: 90%;
-    }
-
-    .carousel-btn {
-        width: 35px;
-        height: 35px;
-        font-size: 16px;
-    }
-}
-
-
-/* Mejoras en transiciones y transformaciones */
-
-/* Transiciones mejoradas para las páginas */
-.page {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: #fff;
-    transform-style: preserve-3d;
-    transform-origin: left center;
-    transition: all 1.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    box-shadow: 0 0 20px rgba(0,0,0,0.1);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    backface-visibility: hidden;
-    opacity: 0;
-    transform: translateY(-20px) rotateY(-15deg);
-}
-
-.page.visible {
-    opacity: 1;
-    transform: translateY(0) rotateY(0deg);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-}
-
-.page.flipped {
-    transform: rotateY(-180deg) translateZ(-1px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-}
-
-/* Efectos de hover para elementos interactivos */
 .content h1, .content h2, .content h3 {
     transition: all 0.3s ease;
     cursor: default;
@@ -820,7 +608,6 @@ h1, h2, h3 {
     color: #a0522d;
 }
 
-/* Animaciones para párrafos */
 .content p {
     transition: all 0.3s ease;
     transform: translateY(0);
@@ -833,7 +620,6 @@ h1, h2, h3 {
     text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
 }
 
-/* Efectos para imágenes */
 .section-image {
     transition: all 0.4s ease;
     transform: scale(1);
@@ -850,7 +636,6 @@ h1, h2, h3 {
     box-shadow: 0 8px 25px rgba(0,0,0,0.3);
 }
 
-/* Animated hearts on page 2 card */
 .card-hearts {
     position: relative;
     display: flex;
@@ -858,16 +643,17 @@ h1, h2, h3 {
     justify-content: center;
     margin-top: 8px;
 }
+
 .card-hearts .heart {
     font-size: 1.6rem;
     filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
     animation: float 3.5s ease-in-out infinite;
 }
+
 .card-hearts .heart.h1 { animation-delay: 0s; }
 .card-hearts .heart.h2 { animation-delay: 0.6s; }
 .card-hearts .heart.h3 { animation-delay: 1.2s; }
 
-/* Envelope icon styles */
 .envelope-icon {
     display: flex;
     justify-content: center;
@@ -888,49 +674,6 @@ h1, h2, h3 {
     filter: drop-shadow(0 6px 12px rgba(0,0,0,0.4));
 }
 
-/* Medium decorative SVG on card */
-.card-art {
-    display: flex;
-    justify-content: center;
-    margin-top: 10px;
-}
-.card-art svg {
-    width: 140px;
-    height: 140px;
-}
-
-/* Dresses SVG sizing */
-.dresses-art {
-    display: flex;
-    justify-content: center;
-    margin-top: 12px;
-}
-.dresses-svg {
-    width: 260px;
-    max-width: 85%;
-    height: auto;
-    filter: drop-shadow(0 6px 16px rgba(0,0,0,0.25));
-}
-
-/* Mejoras en los botones de navegación */
-#prev-btn, #next-btn {
-    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    transform: scale(1);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-}
-
-#prev-btn:hover, #next-btn:hover {
-    transform: scale(1.1) translateY(-2px);
-    background-color: #a0522d;
-    box-shadow: 0 8px 16px rgba(0,0,0,0.3);
-}
-
-#prev-btn:active, #next-btn:active {
-    transform: scale(0.95) translateY(0);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-}
-
-/* Animaciones de entrada para elementos */
 @keyframes slideInFromLeft {
     0% {
         transform: translateX(-100px);
@@ -964,7 +707,6 @@ h1, h2, h3 {
     }
 }
 
-/* Aplicar animaciones a elementos específicos */
 .page.visible h1 {
     animation: fadeInUp 1s ease-out 0.2s both;
 }
@@ -989,11 +731,6 @@ h1, h2, h3 {
     animation: fadeInUp 0.8s ease-out 0.5s both;
 }
 
-.page.visible #map-container {
-    animation: fadeInUp 0.8s ease-out 0.7s both;
-}
-
-/* Efectos de partículas brillantes */
 @keyframes sparkle {
     0%, 100% { opacity: 0; transform: scale(0); }
     50% { opacity: 1; transform: scale(1); }
@@ -1009,7 +746,6 @@ h1, h2, h3 {
     pointer-events: none;
 }
 
-/* Efecto de brillo en el título principal */
 #page1 h1, #page1 h2 {
     position: relative;
     overflow: hidden;
@@ -1031,23 +767,6 @@ h1, h2, h3 {
     100% { left: 100%; }
 }
 
-/* Mejoras responsivas */
-@media (max-width: 768px) {
-    .book {
-        width: 95%;
-        max-width: none;
-    }
-
-    .page {
-        transition: all 0.8s ease;
-    }
-    .content {
-        padding: 1em;
-    }
-
-    h3 { font-size: 3rem; }
-
-/* Estilo específico para el nombre del invitado en la página 2 - prioridad máxima */
 #guest-name-page2 {
     font-size: 3.2rem !important;
     color: #f4f0e8 !important;
@@ -1062,139 +781,6 @@ h1, h2, h3 {
     font-family: 'Great Vibes', cursive !important;
 }
 
-    .content h1:hover, .content h2:hover, .content h3:hover {
-        transform: scale(1.02);
-    }
-
-    .section-image:hover {
-        transform: scale(1.02);
-    }
-
-    #prev-btn, #next-btn {
-        width: 40px;
-        height: 40px;
-        font-size: 20px;
-        bottom: 15px;
-    }
-
-    #prev-btn { left: 15px; }
-    #next-btn { right: 15px; }
-
-    #map-wrapper {
-        height: 200px;
-    }
-
-    .map-overlay {
-        padding: 10px;
-    }
-
-    .location-info h5 {
-        font-size: 1rem;
-    }
-
-    .location-info p {
-        font-size: 0.8rem;
-    }
-
-    .countdown-item {
-        min-width: 50px;
-        padding: 8px 5px;
-    }
-
-    .countdown-item span {
-        font-size: 1.2rem;
-    }
-
-    .countdown-item label {
-        font-size: 0.7rem;
-    }
-}
-
-@media (max-width: 480px) {
-    h1 { font-size: 2.5rem; line-height: 1.1; }
-    h2 { font-size: 1.5rem; line-height: 1.2; }
-    h3 { font-size: 2rem; line-height: 1.2; }
-
-    /* Further reduce text sizes for very small screens */
-    #page2 .content h3 {
-        font-size: 1.4rem;
-        line-height: 1.3;
-    }
-
-    #page2 .content h2 {
-        font-size: 2.3rem;
-        line-height: 0.3;
-    }
-
-    .content {
-        padding: 0.8em;
-    }
-
-    .section-image {
-        max-width: 90%;
-        max-width: 200px;
-        height: auto;
-    }
-
-    /* Typewriter aún más fluido en pantallas muy pequeñas */
-    .typewriter, .typewriter-delay {
-        font-size: clamp(1.1rem, 7.2vw, 1.6rem);
-        white-space: normal;
-        display: inline-block;
-        line-height: 1.25;
-    }
-
-    #prev-btn, #next-btn {
-        width: 35px;
-        height: 35px;
-        font-size: 18px;
-        bottom: 10px;
-    }
-
-    #prev-btn { left: 10px; }
-    #next-btn { right: 10px; }
-
-    #map-wrapper {
-        height: 180px;
-    }
-
-    .verse {
-        font-size: 1rem;
-    }
-
-    /* Responsive extra para la sección de pareja en móviles pequeños */
-    .par-container .section-image {
-        max-width: 120px;
-        max-height: 120px;
-        border-width: 2px;
-    }
-
-    .couple-section {
-        gap: 10px;
-        margin: 10px 0;
-    }
-
-    /* Responsive para botones de confirmación */
-    .confirmation-buttons {
-        flex-direction: column;
-        gap: 15px;
-    }
-
-    .confirm-btn {
-        padding: 10px 25px;
-        font-size: 1rem;
-    }
-
-    .confirmation-title {
-        font-size: 1.5rem;
-    }
-
-    .confirmation-message {
-        font-size: 1.1rem;
-    }
-}
-
-/* Explosion animation for page7 */
 #page7 #explosion-container {
     position: absolute;
     top: 0;
@@ -1231,7 +817,6 @@ h1, h2, h3 {
     }
 }
 
-/* Different particle colors */
 .particle:nth-child(10n+1) { background: radial-gradient(circle, #ffd700, #ff4500); }
 .particle:nth-child(10n+2) { background: radial-gradient(circle, #ff1493, #dc143c); }
 .particle:nth-child(10n+3) { background: radial-gradient(circle, #00ff00, #32cd32); }
@@ -1242,3 +827,169 @@ h1, h2, h3 {
 .particle:nth-child(10n+8) { background: radial-gradient(circle, #00ffff, #20b2aa); }
 .particle:nth-child(10n+9) { background: radial-gradient(circle, #ffa500, #ff8c00); }
 .particle:nth-child(10n+10) { background: radial-gradient(circle, #800080, #9932cc); }
+
+@media (max-width: 768px) {
+    .book {
+        width: 95%;
+        max-width: none;
+    }
+
+    .page {
+        transition: all 0.8s ease;
+    }
+
+    .content {
+        padding: 1em;
+    }
+
+    h3 { font-size: 3rem; }
+
+    .content h1:hover, .content h2:hover, .content h3:hover {
+        transform: scale(1.02);
+    }
+
+    .section-image:hover {
+        transform: scale(1.02);
+    }
+
+    #prev-btn, #next-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+        bottom: 15px;
+    }
+
+    #prev-btn { left: 15px; }
+    #next-btn { right: 15px; }
+}
+
+@media (max-width: 600px) {
+    #countdown {
+        gap: 10px;
+    }
+    
+    .countdown-item {
+        min-width: 60px;
+        padding: 10px 8px;
+    }
+    
+    .countdown-item span {
+        font-size: 1.5rem;
+    }
+    
+    .countdown-item label {
+        font-size: 0.8rem;
+    }
+
+    .couple-section {
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        margin: 12px 0;
+        flex-wrap: nowrap;
+    }
+
+    .couple-names {
+        min-width: 0;
+        text-align: left;
+    }
+
+    .par-container .section-image {
+        max-width: 90px;
+        max-height: 90px;
+    }
+
+    .typewriter, .typewriter-delay {
+        font-size: clamp(1.2rem, 6.5vw, 2rem);
+        white-space: normal;
+        display: inline-block;
+    }
+
+    .carousel {
+        max-width: 90%;
+        max-width: 250px;
+    }
+
+    .carousel-image {
+        height: 160px;
+    }
+
+    .carousel-btn {
+        width: 35px;
+        height: 35px;
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 { font-size: 2.5rem; line-height: 1.1; }
+    h2 { font-size: 1.5rem; line-height: 1.2; }
+    h3 { font-size: 2rem; line-height: 1.2; }
+
+    #page2 .content h3 {
+        font-size: 1.4rem;
+        line-height: 1.3;
+    }
+
+    #page2 .content h2 {
+        font-size: 2.3rem;
+        line-height: 0.3;
+    }
+
+    .content {
+        padding: 0.8em;
+    }
+
+    .section-image {
+        max-width: 90%;
+        max-width: 200px;
+        height: auto;
+    }
+
+    .typewriter, .typewriter-delay {
+        font-size: clamp(1.1rem, 7.2vw, 1.6rem);
+        white-space: normal;
+        display: inline-block;
+        line-height: 1.25;
+    }
+
+    #prev-btn, #next-btn {
+        width: 35px;
+        height: 35px;
+        font-size: 18px;
+        bottom: 10px;
+    }
+
+    #prev-btn { left: 10px; }
+    #next-btn { right: 10px; }
+
+    .verse {
+        font-size: 1rem;
+    }
+
+    .par-container .section-image {
+        max-width: 120px;
+        max-height: 120px;
+    }
+
+    .couple-section {
+        gap: 10px;
+        margin: 10px 0;
+    }
+
+    .confirmation-buttons {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .confirm-btn {
+        width: 100%;
+        padding: 15px 20px;
+    }
+}
+
+.elegant-text {
+    font-weight: 400;
+    letter-spacing: 0.5px;
+}

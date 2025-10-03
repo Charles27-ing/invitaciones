@@ -26,7 +26,6 @@
             overflow-x: hidden;
         }
 
-        /* Animated background flowers */
         .bg-flower {
             position: fixed;
             width: 40px;
@@ -277,7 +276,6 @@
     </style>
 </head>
 <body>
-    <!-- Animated background flowers -->
     <div class="bg-flower" style="top: 10%; left: 5%;">
         <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
             <circle cx="50" cy="50" r="15" fill="#ff69b4" opacity="0.6"/>
@@ -321,22 +319,22 @@
     </div>
 
     <div class="container">
-        <h1>✉️ Generador de Invitación</h1>
+        <h1>Generador de Invitación</h1>
         <p class="subtitle">Crea una invitación personalizada para nuestros seres queridos</p>
 
         <div class="hearts">💕</div>
 
         <form id="invitation-form">
             <div class="form-group">
-                <label for="guest-name">👤 Nombre del Invitado:</label>
+                <label for="guest-name">Nombre del Invitado:</label>
                 <input type="text" id="guest-name" class="input-field" placeholder="Ej: Familia Pérez García" required>
             </div>
 
-            <button type="submit" class="generate-btn">🎉 Generar Invitación Personalizada</button>
+            <button type="submit" class="generate-btn">Generar Invitación Personalizada</button>
         </form>
 
         <div class="result-section" id="result-section">
-            <h3 style="color: #8B4513; margin-bottom: 15px;">✅ ¡Invitación Generada!</h3>
+            <h3 style="color: #8B4513; margin-bottom: 15px;">Invitación Generada</h3>
 
             <div class="preview-section">
                 <p class="preview-text" id="preview-text">La invitación dirá: "<span id="guest-name-preview"></span>"</p>
@@ -345,15 +343,15 @@
             <div class="generated-link" id="generated-link"></div>
 
             <div>
-                <button class="copy-btn" onclick="copyToClipboard()">📋 Copiar Enlace</button>
-                <a class="open-btn" id="open-link" target="_blank">🔗 Abrir Invitación</a>
+                <button class="copy-btn" onclick="copyToClipboard()">Copiar Enlace</button>
+                <a class="open-btn" id="open-link" target="_blank">Abrir Invitación</a>
             </div>
 
             <div style="margin-top: 15px;">
-                <a class="whatsapp-btn" id="whatsapp-link" target="_blank">📱 Compartir por WhatsApp</a>
+                <a class="whatsapp-btn" id="whatsapp-link" target="_blank">Compartir por WhatsApp</a>
             </div>
 
-            <div class="success-message" id="success-message">¡Enlace copiado al portapapeles!</div>
+            <div class="success-message" id="success-message">Enlace copiado al portapapeles</div>
         </div>
     </div>
 
@@ -367,21 +365,29 @@
                 return;
             }
 
-            // Generate the personalized link
+            // Generar el enlace personalizado
             const baseUrl = window.location.origin + window.location.pathname.replace('generador.html', 'index.html');
             const personalizedUrl = baseUrl + '?invitado=' + encodeURIComponent(guestName);
 
-            // Show results
+            // Mostrar resultados
             document.getElementById('result-section').style.display = 'block';
             document.getElementById('generated-link').textContent = personalizedUrl;
             document.getElementById('guest-name-preview').textContent = guestName;
             document.getElementById('open-link').href = personalizedUrl;
 
-            // Generate WhatsApp message
-            const message = `🌸 ¡Estás invitado a nuestra boda! 🌸%0A%0AHola ${guestName},%0A%0AQueremos compartir contigo este momento tan especial. Abre tu invitación personalizada:%0A%0A${personalizedUrl}%0A%0A¡Te esperamos! 💕`;
-            document.getElementById('whatsapp-link').href = 'https://wa.me/?text=' + message;
+            // Generar mensaje de WhatsApp con URL codificada
+            const whatsappMessage = '🌸 ¡Estás invitado a nuestra boda! 🌸\n\n' +
+                'Hola ' + guestName + ',\n\n' +
+                'Queremos compartir contigo este momento tan especial. ' +
+                'Abre tu invitación personalizada:\n\n' +
+                personalizedUrl + '\n\n' +
+                '¡Te esperamos! 💕';
+            
+            // Codificar el mensaje completo para WhatsApp
+            const encodedMessage = encodeURIComponent(whatsappMessage);
+            document.getElementById('whatsapp-link').href = 'https://wa.me/?text=' + encodedMessage;
 
-            // Smooth scroll to results
+            // Scroll suave hacia resultados
             document.getElementById('result-section').scrollIntoView({
                 behavior: 'smooth',
                 block: 'center'
@@ -414,7 +420,7 @@
             }, 3000);
         }
 
-        // Add some interactive effects
+        // Vista previa en tiempo real
         document.getElementById('guest-name').addEventListener('input', function() {
             const preview = document.getElementById('guest-name-preview');
             if (preview) {
