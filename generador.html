@@ -330,6 +330,11 @@
                 <input type="text" id="guest-name" class="input-field" placeholder="Ej: Familia Pérez García" required>
             </div>
 
+            <div class="form-group">
+                <label for="guest-quantity">Cantidad de Personas:</label>
+                <input type="number" id="guest-quantity" class="input-field" placeholder="Ej: 2" min="1" max="10" value="2" required>
+            </div>
+
             <button type="submit" class="generate-btn">Generar Invitación Personalizada</button>
         </form>
 
@@ -338,6 +343,7 @@
 
             <div class="preview-section">
                 <p class="preview-text" id="preview-text">La invitación dirá: "<span id="guest-name-preview"></span>"</p>
+                <p class="preview-text" id="quantity-preview-text">Cupos: <span id="guest-quantity-preview">2</span> Personas</p>
             </div>
 
             <div class="generated-link" id="generated-link"></div>
@@ -360,14 +366,21 @@
             e.preventDefault();
 
             const guestName = document.getElementById('guest-name').value.trim();
+            const guestQuantity = document.getElementById('guest-quantity').value.trim();
+            
             if (!guestName) {
                 alert('Por favor ingresa el nombre del invitado');
                 return;
             }
 
-            // Generar el enlace personalizado
+            if (!guestQuantity || guestQuantity < 1) {
+                alert('Por favor ingresa una cantidad válida de personas');
+                return;
+            }
+
+            // Generar el enlace personalizado con ambos parámetros
             const baseUrl = window.location.origin + window.location.pathname.replace('generador.html', 'index.html');
-            const personalizedUrl = baseUrl + '?invitado=' + encodeURIComponent(guestName);
+            const personalizedUrl = baseUrl + '?invitado=' + encodeURIComponent(guestName) + '&cantidad=' + encodeURIComponent(guestQuantity);
 
             // Mostrar resultados
             document.getElementById('result-section').style.display = 'block';
@@ -420,11 +433,20 @@
             }, 3000);
         }
 
-        // Vista previa en tiempo real
+        // Vista previa en tiempo real para nombre
         document.getElementById('guest-name').addEventListener('input', function() {
             const preview = document.getElementById('guest-name-preview');
             if (preview) {
                 preview.textContent = this.value || 'Nombre del invitado';
+            }
+        });
+
+        // Vista previa en tiempo real para cantidad
+        document.getElementById('guest-quantity').addEventListener('input', function() {
+            const preview = document.getElementById('guest-quantity-preview');
+            if (preview) {
+                const quantity = this.value || '2';
+                preview.textContent = quantity + (quantity === '1' ? ' Persona' : ' Personas');
             }
         });
     </script>

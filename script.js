@@ -12,39 +12,51 @@ document.addEventListener('DOMContentLoaded', function() {
         pages[i].classList.add('back');
     }
 
-    // Leer el parámetro 'invitado' y poblar nombre
-    try {
-        const urlParams = new URLSearchParams(window.location.search);
-        let invitado = urlParams.get('invitado');
+   // Leer los parámetros 'invitado' y 'cantidad'
+try {
+    const urlParams = new URLSearchParams(window.location.search);
+    let invitado = urlParams.get('invitado');
+    let cantidad = urlParams.get('cantidad');
 
-        // Si no se encuentra con URLSearchParams, intentar método manual
-        if (!invitado) {
-            const queryString = window.location.search.substring(1);
-            const params = queryString.split('&');
-            for (let param of params) {
-                const [key, value] = param.split('=');
-                if (key === 'invitado') {
-                    invitado = value;
-                    break;
-                }
+    // Si no se encuentra con URLSearchParams, intentar método manual
+    if (!invitado || !cantidad) {
+        const queryString = window.location.search.substring(1);
+        const params = queryString.split('&');
+        for (let param of params) {
+            const [key, value] = param.split('=');
+            if (key === 'invitado') {
+                invitado = value;
+            } else if (key === 'cantidad') {
+                cantidad = value;
             }
         }
-
-        if (invitado && invitado.trim().length > 0) {
-            // Decodificar el nombre (convierte %20 y + en espacios)
-            const name = decodeURIComponent(invitado.replace(/\+/g, ' ')).trim();
-            
-            if (name.length > 0) {
-                const guestNamePage2El = document.getElementById('guest-name-page2');
-                if (guestNamePage2El) {
-                    guestNamePage2El.textContent = name;
-                }
-            }
-        }
-    } catch (e) {
-        console.warn('No se pudo leer el parámetro invitado:', e);
     }
 
+    if (invitado && invitado.trim().length > 0) {
+        // Decodificar el nombre (convierte %20 y + en espacios)
+        const name = decodeURIComponent(invitado.replace(/\+/g, ' ')).trim();
+        
+        if (name.length > 0) {
+            const guestNamePage2El = document.getElementById('guest-name-page2');
+            if (guestNamePage2El) {
+                guestNamePage2El.textContent = name;
+            }
+        }
+    }
+
+    // Procesar cantidad de personas
+    if (cantidad && cantidad.trim().length > 0) {
+        const quantity = decodeURIComponent(cantidad.replace(/\+/g, ' ')).trim();
+        if (quantity.length > 0 && !isNaN(quantity)) {
+            const guestQuantityEl = document.getElementById('guest-quantity-page5b');
+            if (guestQuantityEl) {
+                guestQuantityEl.textContent = quantity + (quantity === '1' ? ' Persona' : ' Personas');
+            }
+        }
+    }
+} catch (e) {
+    console.warn('No se pudo leer los parámetros de la URL:', e);
+}
     // Crear flores SVG en movimiento
     function createFlower() {
         if (!flowerContainer) return;
