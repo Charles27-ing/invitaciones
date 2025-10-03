@@ -12,51 +12,39 @@ document.addEventListener('DOMContentLoaded', function() {
         pages[i].classList.add('back');
     }
 
-   // Leer los parámetros 'invitado' y 'cantidad'
-try {
-    const urlParams = new URLSearchParams(window.location.search);
-    let invitado = urlParams.get('invitado');
-    let cantidad = urlParams.get('cantidad');
+    // Leer el parámetro 'invitado' y poblar nombre
+    try {
+        const urlParams = new URLSearchParams(window.location.search);
+        let invitado = urlParams.get('invitado');
 
-    // Si no se encuentra con URLSearchParams, intentar método manual
-    if (!invitado || !cantidad) {
-        const queryString = window.location.search.substring(1);
-        const params = queryString.split('&');
-        for (let param of params) {
-            const [key, value] = param.split('=');
-            if (key === 'invitado') {
-                invitado = value;
-            } else if (key === 'cantidad') {
-                cantidad = value;
+        // Si no se encuentra con URLSearchParams, intentar método manual
+        if (!invitado) {
+            const queryString = window.location.search.substring(1);
+            const params = queryString.split('&');
+            for (let param of params) {
+                const [key, value] = param.split('=');
+                if (key === 'invitado') {
+                    invitado = value;
+                    break;
+                }
             }
         }
-    }
 
-    if (invitado && invitado.trim().length > 0) {
-        // Decodificar el nombre (convierte %20 y + en espacios)
-        const name = decodeURIComponent(invitado.replace(/\+/g, ' ')).trim();
-        
-        if (name.length > 0) {
-            const guestNamePage2El = document.getElementById('guest-name-page2');
-            if (guestNamePage2El) {
-                guestNamePage2El.textContent = name;
+        if (invitado && invitado.trim().length > 0) {
+            // Decodificar el nombre (convierte %20 y + en espacios)
+            const name = decodeURIComponent(invitado.replace(/\+/g, ' ')).trim();
+            
+            if (name.length > 0) {
+                const guestNamePage2El = document.getElementById('guest-name-page2');
+                if (guestNamePage2El) {
+                    guestNamePage2El.textContent = name;
+                }
             }
         }
+    } catch (e) {
+        console.warn('No se pudo leer el parámetro invitado:', e);
     }
 
-    // Procesar cantidad de personas
-    if (cantidad && cantidad.trim().length > 0) {
-        const quantity = decodeURIComponent(cantidad.replace(/\+/g, ' ')).trim();
-        if (quantity.length > 0 && !isNaN(quantity)) {
-            const guestQuantityEl = document.getElementById('guest-quantity-page5b');
-            if (guestQuantityEl) {
-                guestQuantityEl.textContent = quantity + (quantity === '1' ? ' Persona' : ' Personas');
-            }
-        }
-    }
-} catch (e) {
-    console.warn('No se pudo leer los parámetros de la URL:', e);
-}
     // Crear flores SVG en movimiento
     function createFlower() {
         if (!flowerContainer) return;
@@ -382,4 +370,178 @@ try {
             updateCarousel();
         }, 3000);
     }
+	
+	// Función mejorada para confirmar asistencia con detección de conversación
+window.confirmAttendance = function(willAttend) {
+    const messageEl = document.getElementById('confirmation-message');
+    const buttons = document.querySelectorAll('.confirm-btn');
+    
+    buttons.forEach(btn => {
+        btn.disabled = true;
+        btn.style.opacity = '0.6';
+    });
+    
+    // Obtener datos del invitado
+    const guestName = document.getElementById('guest-name-page2').textContent || 'Invitado';
+    const guestQuantity = document.getElementById('guest-quantity-page5b').textContent || '2 Personas';
+    
+    let confirmationMessage, whatsappMessage;
+    
+    if (willAttend) {
+        confirmationMessage = '¡Excelente! Nos vemos el 22 de Noviembre 💕';
+        whatsappMessage = `🌸 Confirmación de Asistencia 🌸\n\n` +
+                         `Hola, soy *${guestName}*.\n` +
+                         `✅ *Confirmo mi asistencia* a tu boda.\n` +
+                         `👥 Asistiremos: *${guestQuantity}*\n` +
+                         `📅 Fecha: 22 de Noviembre 2025\n` +
+                         `⏰ Hora: 5:00 PM\n` +
+                         `📍 Lugar: Casa de Eventos "Las Marias"\n\n` +
+                         `¡Estamos muy emocionados de compartir este momento con ustedes! 💕\n\n` +
+                         `Con amor,\n${guestName}`;
+    } else {
+        confirmationMessage = 'Entendemos, gracias por avisarnos. Te extrañaremos 💔';
+        whatsappMessage = `🌸 Confirmación de Asistencia 🌸\n\n` +
+                         `Hola, soy *${guestName}*.\n` +
+                         `❌ *Lamentablemente no podré asistir* a tu boda.\n` +
+                         `📅 Fecha: 22 de Noviembre 2025\n\n` +
+                         `Les deseo lo mejor en este nuevo camino juntos. ¡Felicidades! 🥰\n\n` +
+                         `Con cariño,\n${guestName}`;
+    }
+    
+    messageEl.innerHTML = confirmationMessage;
+    messageEl.style.color = willAttend ? '#4CAF50' : '#f44336';
+    messageEl.classList.add('show');
+    
+    // Intentar detectar el número de WhatsApp del remitente
+    let phoneNumber = detectWhatsAppNumber();
+    
+    if (phoneNumber) {
+        // Si detectamos un número, crear botón para responder en la misma conversación
+        createWhatsAppButtons(whatsappMessage, phoneNumber, guestName, willAttend);
+    } else {
+        // Si no detectamos número, crear botón genérico
+        createGenericWhatsAppButton(whatsappMessage);
+    }
+    
+    // Guardar en localStorage
+    const response = {
+        name: guestName,
+        quantity: guestQuantity,
+        willAttend: willAttend,
+        timestamp: new Date().toISOString(),
+        message: whatsappMessage
+    };
+    
+    localStorage.setItem('weddingConfirmation', JSON.stringify(response));
+};
+
+// Función para detectar número de WhatsApp (si viene de un enlace de WhatsApp)
+function detectWhatsAppNumber() {
+    // Verificar si viene de un referer de WhatsApp
+    if (document.referrer.includes('api.whatsapp.com')) {
+        try {
+            const refererUrl = new URL(document.referrer);
+            const textParam = refererUrl.searchParams.get('text');
+            if (textParam) {
+                // Intentar extraer número del mensaje original
+                const decodedText = decodeURIComponent(textParam);
+                // Buscar patrones de números de teléfono en el mensaje
+                const phoneMatch = decodedText.match(/https?:\/\/wa\.me\/(\d+)/);
+                if (phoneMatch) {
+                    return phoneMatch[1];
+                }
+            }
+        } catch (e) {
+            console.log('No se pudo extraer número del referer');
+        }
+    }
+    
+    // Verificar parámetros en la URL actual
+    const urlParams = new URLSearchParams(window.location.search);
+    const fromWhatsApp = urlParams.get('from');
+    if (fromWhatsApp) {
+        return fromWhatsApp.replace(/\D/g, ''); // Solo números
+    }
+    
+    return null;
+}
+
+// Función para crear botones de WhatsApp específicos
+function createWhatsAppButtons(message, phoneNumber, guestName, willAttend) {
+    const messageEl = document.getElementById('confirmation-message');
+    
+    // Botón para responder en la misma conversación
+    const replyBtn = document.createElement('button');
+    replyBtn.className = 'confirm-btn';
+    replyBtn.style.background = 'linear-gradient(135deg, #25D366, #128C7E)';
+    replyBtn.style.marginTop = '15px';
+    replyBtn.style.marginRight = '10px';
+    replyBtn.style.width = 'calc(70% - 10px)';
+    replyBtn.innerHTML = `💚 Responder en WhatsApp`;
+    
+    const encodedMessage = encodeURIComponent(message);
+    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+    
+    replyBtn.onclick = function() {
+        window.open(whatsappUrl, '_blank');
+    };
+    
+    // Botón alternativo (abrir WhatsApp sin número específico)
+    const genericBtn = document.createElement('button');
+    genericBtn.className = 'confirm-btn';
+    genericBtn.style.background = 'linear-gradient(135deg, #667780, #54656f)';
+    genericBtn.style.marginTop = '15px';
+    genericBtn.style.width = '30%';
+    genericBtn.innerHTML = `📱 Otro chat`;
+    
+    genericBtn.onclick = function() {
+        const genericWhatsappUrl = `https://wa.me/?text=${encodedMessage}`;
+        window.open(genericWhatsappUrl, '_blank');
+    };
+    
+    const buttonContainer = document.createElement('div');
+    buttonContainer.style.display = 'flex';
+    buttonContainer.style.gap = '10px';
+    buttonContainer.style.marginTop = '15px';
+    
+    buttonContainer.appendChild(replyBtn);
+    buttonContainer.appendChild(genericBtn);
+    messageEl.appendChild(buttonContainer);
+    
+    // Enviar automáticamente después de 5 segundos
+    setTimeout(() => {
+        if (confirm(`¿Quieres enviar tu confirmación a ${guestName} ahora?`)) {
+            window.open(whatsappUrl, '_blank');
+        }
+    }, 5000);
+}
+
+// Función para crear botón genérico de WhatsApp
+function createGenericWhatsAppButton(message) {
+    const messageEl = document.getElementById('confirmation-message');
+    
+    const whatsappBtn = document.createElement('button');
+    whatsappBtn.className = 'confirm-btn';
+    whatsappBtn.style.background = 'linear-gradient(135deg, #25D366, #128C7E)';
+    whatsappBtn.style.marginTop = '15px';
+    whatsappBtn.style.width = '100%';
+    whatsappBtn.innerHTML = `📱 Enviar confirmación por WhatsApp`;
+    
+    const encodedMessage = encodeURIComponent(message);
+    const whatsappUrl = `https://wa.me/?text=${encodedMessage}`;
+    
+    whatsappBtn.onclick = function() {
+        window.open(whatsappUrl, '_blank');
+    };
+    
+    messageEl.appendChild(whatsappBtn);
+    
+    // Mostrar instrucciones
+    const instructions = document.createElement('p');
+    instructions.style.marginTop = '10px';
+    instructions.style.fontSize = '0.9rem';
+    instructions.style.color = '#666';
+    instructions.innerHTML = 'Se abrirá WhatsApp. Elige la conversación donde recibiste la invitación y envía el mensaje.';
+    messageEl.appendChild(instructions);
+}
 });
