@@ -12,20 +12,22 @@ document.addEventListener('DOMContentLoaded', function() {
         pages[i].classList.add('back');
     }
 
-    // Leer el parámetro 'invitado' y poblar nombre
-    try {
+    // Leer los parámetros 'invitado' y 'cantidad'
+   try {
         const urlParams = new URLSearchParams(window.location.search);
         let invitado = urlParams.get('invitado');
+        let cantidad = urlParams.get('cantidad');
 
         // Si no se encuentra con URLSearchParams, intentar método manual
-        if (!invitado) {
+        if (!invitado || !cantidad) {
             const queryString = window.location.search.substring(1);
             const params = queryString.split('&');
             for (let param of params) {
                 const [key, value] = param.split('=');
                 if (key === 'invitado') {
                     invitado = value;
-                    break;
+                } else if (key === 'cantidad') {
+                    cantidad = value;
                 }
             }
         }
@@ -41,8 +43,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
         }
+
+        // Procesar cantidad de personas
+        if (cantidad && cantidad.trim().length > 0) {
+            const quantity = decodeURIComponent(cantidad.replace(/\+/g, ' ')).trim();
+            if (quantity.length > 0 && !isNaN(quantity)) {
+                const guestQuantityEl = document.getElementById('guest-quantity-page5b');
+                if (guestQuantityEl) {
+                    guestQuantityEl.textContent = quantity + (quantity === '1' ? ' Persona' : ' Personas');
+                }
+            }
+        }
     } catch (e) {
-        console.warn('No se pudo leer el parámetro invitado:', e);
+        console.warn('No se pudo leer los parámetros de la URL:', e);
     }
 
     // Crear flores SVG en movimiento
@@ -311,36 +324,6 @@ document.addEventListener('DOMContentLoaded', function() {
         animatePageElements(pages[0]);
     }, 500);
 
-    // Función para confirmar asistencia
-    window.confirmAttendance = function(willAttend) {
-        const messageEl = document.getElementById('confirmation-message');
-        const buttons = document.querySelectorAll('.confirm-btn');
-        
-        buttons.forEach(btn => {
-            btn.disabled = true;
-            btn.style.opacity = '0.6';
-        });
-        
-        if (willAttend) {
-            messageEl.innerHTML = '¡Excelente! Nos vemos el 22 de Noviembre 💕';
-            messageEl.style.color = '#4CAF50';
-        } else {
-            messageEl.innerHTML = 'Entendemos, gracias por avisarnos. Te extrañaremos 💔';
-            messageEl.style.color = '#f44336';
-        }
-        
-        messageEl.classList.add('show');
-        
-        const guestName = document.getElementById('guest-name-page2').textContent || 'Invitado';
-        const response = {
-            name: guestName,
-            willAttend: willAttend,
-            timestamp: new Date().toISOString()
-        };
-        
-        localStorage.setItem('weddingConfirmation', JSON.stringify(response));
-    };
-
     // Funcionalidad del carrusel
     const carouselContainer = document.querySelector('.carousel-container');
     const carouselImages = document.querySelectorAll('.carousel-image');
@@ -370,8 +353,9 @@ document.addEventListener('DOMContentLoaded', function() {
             updateCarousel();
         }, 3000);
     }
-	
-	// Función mejorada para confirmar asistencia con detección de conversación
+});
+
+// Función mejorada para confirmar asistencia con detección de conversación
 window.confirmAttendance = function(willAttend) {
     const messageEl = document.getElementById('confirmation-message');
     const buttons = document.querySelectorAll('.confirm-btn');
@@ -544,4 +528,3 @@ function createGenericWhatsAppButton(message) {
     instructions.innerHTML = 'Se abrirá WhatsApp. Elige la conversación donde recibiste la invitación y envía el mensaje.';
     messageEl.appendChild(instructions);
 }
-});
