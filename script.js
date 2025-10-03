@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const book = document.getElementById('book');
     const pages = document.querySelectorAll('.page');
     const prevBtn = document.getElementById('prev-btn');
     const nextBtn = document.getElementById('next-btn');
@@ -13,44 +12,40 @@ document.addEventListener('DOMContentLoaded', function() {
         pages[i].classList.add('back');
     }
 
-    // Leer el parámetro 'invitado' y poblar nombre en ambas páginas
+    // Leer el parámetro 'invitado' y poblar nombre
     try {
-        const params = new URLSearchParams(window.location.search);
-        const invitado = params.get('invitado');
+        const urlParams = new URLSearchParams(window.location.search);
+        let invitado = urlParams.get('invitado');
 
-        console.log('Debug - URL params:', window.location.search);
-        console.log('Debug - invitado raw:', invitado);
+        // Si no se encuentra con URLSearchParams, intentar método manual
+        if (!invitado) {
+            const queryString = window.location.search.substring(1);
+            const params = queryString.split('&');
+            for (let param of params) {
+                const [key, value] = param.split('=');
+                if (key === 'invitado') {
+                    invitado = value;
+                    break;
+                }
+            }
+        }
 
         if (invitado && invitado.trim().length > 0) {
-            const name = decodeURIComponent(invitado.trim());
-            console.log('Debug - invitado decoded:', name);
-            console.log('Debug - name length:', name.length);
-            console.log('Debug - name characters:', [...name].map(c => c.charCodeAt(0)));
-
-            // Additional validation for special characters
-            if (name.length === 0) {
-                console.error('Debug - decoded name is empty!');
-                return;
+            // Decodificar el nombre (convierte %20 y + en espacios)
+            const name = decodeURIComponent(invitado.replace(/\+/g, ' ')).trim();
+            
+            if (name.length > 0) {
+                const guestNamePage2El = document.getElementById('guest-name-page2');
+                if (guestNamePage2El) {
+                    guestNamePage2El.textContent = name;
+                }
             }
-
-            // Poblar página 2
-            const guestNamePage2El = document.getElementById('guest-name-page2');
-            if (guestNamePage2El) {
-                console.log('Debug - element found, setting textContent');
-                guestNamePage2El.textContent = name;
-                console.log('Debug - element textContent after setting:', guestNamePage2El.textContent);
-                console.log('Debug - element innerHTML after setting:', guestNamePage2El.innerHTML);
-            } else {
-                console.error('Debug - guest-name-page2 element not found!');
-            }
-        } else {
-            console.log('Debug - no invitado parameter found');
         }
     } catch (e) {
         console.warn('No se pudo leer el parámetro invitado:', e);
     }
 
-    // Crear flores SVG en movimiento (pétalos flotando)
+    // Crear flores SVG en movimiento
     function createFlower() {
         if (!flowerContainer) return;
         const flower = document.createElement('div');
@@ -134,10 +129,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Inicializar flores decorativas
     createCornerFlowers();
-
-    setInterval(createFlower, 800); // Genera una flor nueva cada 800ms
+    setInterval(createFlower, 800);
 
     // Temporizador de cuenta regresiva
     function updateCountdown() {
@@ -151,7 +144,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-            // Actualizar los elementos del DOM
             const daysElement = document.getElementById('days');
             const hoursElement = document.getElementById('hours');
             const minutesElement = document.getElementById('minutes');
@@ -162,7 +154,6 @@ document.addEventListener('DOMContentLoaded', function() {
             if (minutesElement) minutesElement.textContent = minutes;
             if (secondsElement) secondsElement.textContent = seconds;
 
-            // Añadir animación de pulso cuando cambian los segundos
             if (secondsElement) {
                 secondsElement.parentElement.classList.add('pulse');
                 setTimeout(() => {
@@ -170,14 +161,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 }, 600);
             }
         } else {
-            // La boda ya pasó
             document.getElementById('countdown-container').innerHTML = 
                 '<h4 style="color: #8B4513;">¡Ya nos casamos!</h4>';
         }
     }
 
-    // Actualizar el temporizador cada segundo
-    updateCountdown(); // Llamada inicial
+    updateCountdown();
     setInterval(updateCountdown, 1000);
 
     // Efectos de partículas brillantes
@@ -190,39 +179,35 @@ document.addEventListener('DOMContentLoaded', function() {
         document.body.appendChild(sparkle);
         
         setTimeout(() => {
-            if (sparkle.parentNode) {
-                sparkle.remove();
-            }
+            if (sparkle.parentNode) sparkle.remove();
         }, 2000);
     }
 
-    // Crear partículas brillantes en movimiento del mouse
     let sparkleTimer;
     document.addEventListener('mousemove', (e) => {
         clearTimeout(sparkleTimer);
         sparkleTimer = setTimeout(() => {
-            if (Math.random() < 0.1) { // 10% de probabilidad
+            if (Math.random() < 0.1) {
                 createSparkle(e.clientX, e.clientY);
             }
         }, 50);
     });
 
-    // Efectos de sonido simulados con vibraciones (si está disponible)
+    // Feedback háptico
     function playHapticFeedback() {
         if (navigator.vibrate) {
             navigator.vibrate(50);
         }
     }
 
-    // Agregar feedback háptico a los botones
     nextBtn.addEventListener('click', playHapticFeedback);
     prevBtn.addEventListener('click', playHapticFeedback);
 
-    // Function to create explosion for page7
+    // Crear explosión para página 7
     function createExplosion() {
         const explosion = document.getElementById('explosion');
         if (!explosion) return;
-        explosion.innerHTML = ''; // Clear previous
+        explosion.innerHTML = '';
         for (let i = 0; i < 100; i++) {
             const particle = document.createElement('div');
             particle.classList.add('particle');
@@ -235,7 +220,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Animación de entrada para elementos cuando se cargan
+    // Animación de entrada para elementos
     function animatePageElements(pageElement) {
         const elements = pageElement.querySelectorAll('h3, p, .section-image, #countdown-container, #map-container');
         elements.forEach((element, index) => {
@@ -249,7 +234,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }, index * 200);
         });
 
-        // Trigger explosion for page7
         if (pageElement.id === 'page7') {
             setTimeout(() => {
                 createExplosion();
@@ -257,13 +241,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Mejorar la navegación con animaciones
-    const originalNextClick = nextBtn.onclick;
-    const originalPrevClick = prevBtn.onclick;
-
-    nextBtn.onclick = null;
-    prevBtn.onclick = null;
-
+    // Navegación
     nextBtn.addEventListener('click', () => {
         if (currentPage < pages.length - 1) {
             pages[currentPage].classList.remove('visible');
@@ -322,16 +300,13 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (Math.abs(diff) > swipeThreshold) {
             if (diff > 0) {
-                // Swipe left - next page
                 nextBtn.click();
             } else {
-                // Swipe right - previous page
                 prevBtn.click();
             }
         }
     }
 
-    // Animar la primera página al cargar
     setTimeout(() => {
         animatePageElements(pages[0]);
     }, 500);
@@ -341,13 +316,11 @@ document.addEventListener('DOMContentLoaded', function() {
         const messageEl = document.getElementById('confirmation-message');
         const buttons = document.querySelectorAll('.confirm-btn');
         
-        // Deshabilitar botones
         buttons.forEach(btn => {
             btn.disabled = true;
             btn.style.opacity = '0.6';
         });
         
-        // Mostrar mensaje
         if (willAttend) {
             messageEl.innerHTML = '¡Excelente! Nos vemos el 22 de Noviembre 💕';
             messageEl.style.color = '#4CAF50';
@@ -358,9 +331,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         messageEl.classList.add('show');
         
-        // Guardar respuesta en localStorage
         const guestName = document.getElementById('guest-name-page2').textContent || 'Invitado';
-        console.log('Debug - saving confirmation for guest:', guestName);
         const response = {
             name: guestName,
             willAttend: willAttend,
@@ -368,12 +339,9 @@ document.addEventListener('DOMContentLoaded', function() {
         };
         
         localStorage.setItem('weddingConfirmation', JSON.stringify(response));
-        
-        // Opcional: Enviar a servidor (si tienes backend)
-        // sendConfirmationToServer(response);
     };
 
-    // Carousel functionality for page3
+    // Funcionalidad del carrusel
     const carouselContainer = document.querySelector('.carousel-container');
     const carouselImages = document.querySelectorAll('.carousel-image');
     const carouselPrevBtn = document.querySelector('.carousel .prev-btn');
@@ -397,15 +365,9 @@ document.addEventListener('DOMContentLoaded', function() {
             updateCarousel();
         });
 
-        // Auto-play carousel
         setInterval(() => {
             currentImageIndex = (currentImageIndex < carouselImages.length - 1) ? currentImageIndex + 1 : 0;
             updateCarousel();
         }, 3000);
     }
 });
-
-// Inicializar mostrando solo la cubierta
-// document.addEventListener('DOMContentLoaded', () => {
-//     flipPage(0); // Muestra la cubierta al cargar
-// });
