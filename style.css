@@ -89,7 +89,7 @@ body, html {
 .book {
     position: relative;
     width: 90%;
-    max-width: 800px;
+    max-width: 480px;
     height: 100vh;
     margin: 0 auto;
     perspective: 1500px;
@@ -832,7 +832,7 @@ h1, h2, h3 {
 @media (max-width: 768px) {
     .book {
         width: 95%;
-        max-width: none;
+     
     }
 
     .page {
@@ -1006,5 +1006,6 @@ h1, h2, h3 {
     letter-spacing: 0.5px;
 
 }
+
 
 
